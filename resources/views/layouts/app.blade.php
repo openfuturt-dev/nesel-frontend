@@ -33,6 +33,8 @@
         <meta name="keywords" content="{{ implode(', ', config('seo.keywords')) }}">
         <meta name="robots" content="{{ config('seo.indexing_enabled') ? 'index, follow' : 'noindex, nofollow' }}">
         <link rel="canonical" href="{{ $canonicalUrl }}">
+        <link rel="icon" type="image/jpeg" href="{{ asset('nesel-logo.jpeg') }}?v=2">
+        <link rel="apple-touch-icon" href="{{ asset('nesel-logo.jpeg') }}?v=2">
 
         <meta property="og:type" content="website">
         <meta property="og:locale" content="fr_MA">
