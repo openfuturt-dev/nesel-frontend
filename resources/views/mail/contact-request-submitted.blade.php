@@ -18,6 +18,10 @@
                             <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0; font-weight: 700; vertical-align: top;">{{ $name }}</td>
                         </tr>
                         <tr>
+                            <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0; color: #64748b; vertical-align: top;">E-mail</td>
+                            <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0; font-weight: 700; vertical-align: top;">{{ $email }}</td>
+                        </tr>
+                        <tr>
                             <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0; color: #64748b; vertical-align: top;">Téléphone</td>
                             <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0; font-weight: 700; vertical-align: top;">{{ $phone }}</td>
                         </tr>

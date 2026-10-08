@@ -3,12 +3,16 @@
 namespace Tests\Feature;
 
 use App\Mail\ContactRequestSubmitted;
+use App\Models\ContactRequest;
 use App\Support\Seo;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class ServicesAndOffersPagesTest extends TestCase
 {
+    use RefreshDatabase;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -158,12 +162,14 @@ class ServicesAndOffersPagesTest extends TestCase
 
         $this->post(route('contact-requests.store'), [
             'name' => 'Nassim Namous',
+            'email' => 'nassim@example.com',
             'phone' => '+212 6 12 34 56 78',
             'city' => 'Marrakech',
             'offer' => 'Golden',
         ])->assertSessionHasNoErrors();
 
         Mail::assertSent(ContactRequestSubmitted::class, fn (ContactRequestSubmitted $mail): bool => $mail->offer === 'Golden');
+        $this->assertSame('Golden', ContactRequest::sole()->offer);
     }
 
     public function test_contact_request_rejects_an_unknown_offer(): void
@@ -172,11 +178,13 @@ class ServicesAndOffersPagesTest extends TestCase
 
         $this->post(route('contact-requests.store'), [
             'name' => 'Nassim Namous',
+            'email' => 'nassim@example.com',
             'phone' => '+212 6 12 34 56 78',
             'city' => 'Marrakech',
             'offer' => 'Platinum',
         ])->assertSessionHasErrors(['offer' => 'Veuillez choisir une offre proposée.']);
 
+        $this->assertDatabaseEmpty('contact_requests');
         Mail::assertNothingSent();
     }
 }

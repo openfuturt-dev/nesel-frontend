@@ -1,6 +1,7 @@
 Nouvelle demande de domiciliation — Nesel
 
 Nom complet : {{ $name }}
+E-mail : {{ $email }}
 Téléphone : {{ $phone }}
 Ville souhaitée : {{ $city }}
 @if ($offer)

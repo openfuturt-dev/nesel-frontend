@@ -211,10 +211,11 @@
 
             <form id="callback-form" method="POST" action="{{ route('contact-requests.store') }}" class="bg-white p-6 shadow-[0_24px_80px_rgba(6,24,50,0.12)] sm:p-10" data-reveal>
                 @csrf
+                <input type="hidden" name="submission_token" value="{{ old('submission_token', (string) \Illuminate\Support\Str::uuid()) }}">
 
                 @if ($errors->any())
                     <div class="mb-6 border-l-4 border-nesel-red bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">
-                        Veuillez corriger les informations indiquées ci-dessous.
+                        {{ $errors->first('throttle') ?: 'Veuillez corriger les informations indiquées ci-dessous.' }}
                     </div>
                 @endif
 
@@ -224,6 +225,13 @@
                         <input type="text" name="name" value="{{ old('name') }}" required maxlength="100" autocomplete="name" placeholder="Votre nom" class="field-input @error('name') border-nesel-red @enderror" aria-describedby="name-error">
                         @error('name')
                             <span id="name-error" class="normal-case tracking-normal text-red-700">{{ $message }}</span>
+                        @enderror
+                    </label>
+                    <label class="field-label">
+                        Adresse e-mail
+                        <input type="email" name="email" value="{{ old('email') }}" required maxlength="255" autocomplete="email" placeholder="vous@exemple.com" class="field-input @error('email') border-nesel-red @enderror" aria-describedby="email-error">
+                        @error('email')
+                            <span id="email-error" class="normal-case tracking-normal text-red-700">{{ $message }}</span>
                         @enderror
                     </label>
                     <label class="field-label">
@@ -244,7 +252,7 @@
                             <span id="city-error" class="normal-case tracking-normal text-red-700">{{ $message }}</span>
                         @enderror
                     </label>
-                    <label class="field-label sm:col-span-2">
+                    <label class="field-label">
                         Offre souhaitée <span class="font-semibold normal-case tracking-normal text-slate-400">(facultatif)</span>
                         <select name="offer" class="field-input @error('offer') border-nesel-red @enderror" aria-describedby="offer-error">
                             <option value="">Pas de préférence</option>
@@ -265,7 +273,7 @@
                     </label>
                 </div>
                 <button type="submit" class="mt-7 inline-flex min-h-13 w-full items-center justify-center gap-2 rounded-md bg-nesel-red px-7 text-sm font-bold text-white transition hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-nesel-red focus:ring-offset-2">
-                    Demander à être rappelé
+                    <span data-submit-label aria-live="polite">Demander à être rappelé</span>
                     <span aria-hidden="true">→</span>
                 </button>
                 <p class="mt-4 text-center text-xs leading-5 text-slate-400">En envoyant ce formulaire, vous acceptez d’être contacté par l’équipe Nesel.</p>

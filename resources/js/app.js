@@ -1,3 +1,5 @@
+import { guardSubmission } from './submit-guard';
+
 const menuToggle = document.querySelector('#menu-toggle');
 const mobileMenu = document.querySelector('#mobile-menu');
 
@@ -28,6 +30,12 @@ document.querySelectorAll('.city-choice').forEach((button) => {
         document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
     });
 });
+
+const callbackForm = document.querySelector('#callback-form');
+
+if (callbackForm instanceof HTMLFormElement) {
+    guardSubmission(callbackForm);
+}
 
 const formSuccess = document.querySelector('#form-success');
 

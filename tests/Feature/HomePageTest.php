@@ -17,4 +17,20 @@ class HomePageTest extends TestCase
             ->assertSee('Casablanca')
             ->assertSee('Demander à être rappelé');
     }
+
+    public function test_submit_button_exposes_the_label_swapped_while_submitting(): void
+    {
+        $this->get('/')->assertSee('<span data-submit-label aria-live="polite">Demander à être rappelé</span>', false);
+    }
+
+    public function test_contact_form_carries_a_fresh_submission_token(): void
+    {
+        $tokenPattern = '/name="submission_token" value="([0-9a-f-]{36})"/';
+
+        preg_match($tokenPattern, $this->get('/')->getContent(), $first);
+        preg_match($tokenPattern, $this->get('/')->getContent(), $second);
+
+        $this->assertNotEmpty($first);
+        $this->assertNotSame($first[1], $second[1]);
+    }
 }

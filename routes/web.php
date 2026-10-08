@@ -14,5 +14,5 @@ Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap');
 Route::get('/robots.txt', [SeoController::class, 'robots'])->name('robots');
 
 Route::post('/demandes-de-contact', [ContactRequestController::class, 'store'])
-    ->middleware('throttle:5,1')
+    ->middleware('throttle:contact-requests')
     ->name('contact-requests.store');

@@ -52,7 +52,8 @@ return [
             'port' => $smtpPort,
             'username' => env('SMTP_USER', env('MAIL_USERNAME')),
             'password' => env('SMTP_PASSWORD', env('MAIL_PASSWORD')),
-            'timeout' => null,
+            // Seconds per SMTP socket operation; null would wait for PHP's default (60s).
+            'timeout' => (int) env('SMTP_TIMEOUT', 10),
             'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url((string) env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
         ],
 

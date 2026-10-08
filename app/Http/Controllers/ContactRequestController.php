@@ -2,26 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\SendContactRequestNotification;
 use App\Http\Requests\StoreContactRequest;
-use App\Mail\ContactRequestSubmitted;
+use App\Models\ContactRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Mail;
+
+use function Illuminate\Support\defer;
 
 class ContactRequestController extends Controller
 {
-    public function store(StoreContactRequest $request): RedirectResponse
+    public function store(StoreContactRequest $request, SendContactRequestNotification $sendNotification): RedirectResponse
     {
-        $contactRequest = $request->validated();
-
-        Mail::to((string) config('services.contact.recipient'))->send(
-            new ContactRequestSubmitted(
-                name: $contactRequest['name'],
-                phone: $contactRequest['phone'],
-                city: $contactRequest['city'],
-                details: $contactRequest['message'] ?? null,
-                offer: $contactRequest['offer'] ?? null,
-            ),
+        // Stored before anything else can fail. A resubmitted token (double click,
+        // refresh, concurrent request) returns the existing row instead of a new one.
+        $contactRequest = ContactRequest::createOrFirst(
+            ['submission_token' => $request->submissionToken()],
+            [
+                ...$request->safe()->except('submission_token'),
+                ...$request->attribution(),
+            ],
         );
+
+        // First attempt after the response is sent, so the visitor never waits
+        // for SMTP. The scheduled contact-requests:dispatch command retries
+        // anything this attempt misses, including when it never runs.
+        if ($contactRequest->wasRecentlyCreated) {
+            defer(fn () => $sendNotification->handle($contactRequest));
+        }
 
         return to_route('home')
             ->withFragment('contact')
