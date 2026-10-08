@@ -30,13 +30,14 @@ class ServicesAndOffersPagesTest extends TestCase
                 'Gestion professionnelle de votre courrier',
                 'Réexpédition nationale et internationale',
                 'Bureaux, coworking et salles de réunion',
-                'Accompagnement à la création d’entreprise au Maroc',
+                'Accompagnement à la constitution de votre société',
                 'Secrétariat et accompagnement administratif',
                 'Services complémentaires pour investisseurs et entrepreneurs',
             ])
             ->assertSeeInOrder(['Opérations', 'Espaces professionnels', 'Accompagnement business'])
             ->assertSee('Préparation des informations et documents nécessaires')
             ->assertSee('Mise en relation avec des professionnels partenaires lorsque nécessaire')
+            ->assertSee('Les immatriculations et identifiants officiels sont délivrés exclusivement par les administrations compétentes.')
             ->assertSee('href="'.route('offers').'"', false)
             ->assertSee('Découvrir nos offres de domiciliation')
             ->assertSee(route('home', ['ville' => 'Marrakech']).'#contact', false)
@@ -58,7 +59,7 @@ class ServicesAndOffersPagesTest extends TestCase
             ->assertSee('En option')
             ->assertSee('Non inclus')
             ->assertSee('Quota mensuel selon les conditions de l’offre')
-            ->assertSee('Accompagnement de base à la création et à l’organisation de l’entreprise')
+            ->assertSee('Accompagnement de base au lancement et à l’organisation de l’entreprise')
             ->assertSee('Coordination des démarches liées à l’évolution de l’entreprise')
             ->assertSee('Quelle offre correspond à mon besoin ?')
             ->assertSee('Équilibre entre image et gestion')

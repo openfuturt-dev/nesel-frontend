@@ -2,7 +2,7 @@
 @use('App\Support\StructuredData')
 @php
     $location = config('business.locations.marrakech');
-    $contactUrl = route('home', ['ville' => 'Marrakech']).'#contact';
+    $contactUrl = '#contact';
 
     $breadcrumbs = [
         ['name' => 'Accueil', 'url' => Seo::route('home')],
@@ -42,6 +42,7 @@
 @endphp
 
 @extends('layouts.app', [
+    'hasContactForm' => true,
     'title' => 'Domiciliation d’entreprise à Marrakech | Nesel',
     'description' => 'Domiciliez votre entreprise à Marrakech avec Nesel : une adresse professionnelle pour votre siège social, la réception de votre courrier et une équipe locale pour vous accompagner.',
     'ogImage' => $location['image'],
@@ -94,8 +95,8 @@
 
                 <div class="grid gap-px border border-slate-300 bg-slate-300 sm:grid-cols-2" data-reveal>
                     <article class="bg-nesel-ivory p-7 sm:p-9">
-                        <h3 class="text-xl font-extrabold tracking-tight">Vous créez votre société</h3>
-                        <p class="mt-3 text-sm leading-6 text-slate-600">Une adresse de siège est l’une des premières pièces de votre dossier de création. Nous mettons en place votre domiciliation pour que vous puissiez avancer dans vos démarches.</p>
+                        <h3 class="text-xl font-extrabold tracking-tight">Vous lancez votre activité</h3>
+                        <p class="mt-3 text-sm leading-6 text-slate-600">Une adresse de siège est l’une des premières étapes de la constitution de votre société. Nous mettons en place votre domiciliation et vous accompagnons pour avancer sereinement.</p>
                     </article>
                     <article class="bg-nesel-ivory p-7 sm:p-9">
                         <h3 class="text-xl font-extrabold tracking-tight">Vous travaillez sur le terrain</h3>
@@ -225,9 +226,11 @@
                 <p class="mt-6 text-base leading-7 text-slate-600">
                     Les pièces demandées varient selon votre situation : création de société ou transfert de siège, forme juridique, nombre de dirigeants. Votre conseiller vous transmet la liste exacte avec votre proposition.
                 </p>
-                <p class="mt-6 rounded border border-dashed border-nesel-gold bg-nesel-gold/10 p-4 font-mono text-sm text-nesel-navy">
-                    [À compléter : liste des documents demandés par Nesel pour une domiciliation à Marrakech — à valider par l’équipe]
-                </p>
+                <div class="mt-8 border-l-4 border-nesel-red pl-5">
+                    <p class="font-bold text-nesel-navy">Vous souhaitez préparer votre dossier dès maintenant ?</p>
+                    <p class="mt-1 text-sm leading-6 text-slate-600">Un conseiller Nesel vous indique les pièces adaptées à votre situation.</p>
+                    <a href="#contact" class="mt-4 inline-flex items-center gap-2 border-b border-nesel-red pb-1 text-sm font-bold text-nesel-red hover:text-red-700">Demander la liste à un conseiller <span aria-hidden="true">→</span></a>
+                </div>
             </div>
 
             <div data-reveal>
@@ -251,19 +254,11 @@
         </div>
     </section>
 
-    <section class="bg-nesel-red py-20 text-white">
-        <div class="mx-auto flex max-w-7xl flex-col gap-8 px-5 sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:px-10">
-            <div>
-                <h2 class="text-3xl font-black tracking-[-0.04em] sm:text-4xl">Prêt à domicilier votre entreprise à Marrakech ?</h2>
-                <p class="mt-3 max-w-xl text-white/85">Laissez-nous vos coordonnées : un conseiller vous rappelle pour faire le point sur votre projet.</p>
-            </div>
-            <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
-                <a href="{{ $contactUrl }}" class="inline-flex min-h-13 items-center justify-center gap-2 rounded-md bg-white px-7 text-sm font-bold text-nesel-navy transition hover:bg-nesel-ivory">
-                    Être rappelé par un conseiller
-                    <span aria-hidden="true">→</span>
-                </a>
-                <a href="{{ route('home') }}" class="text-sm font-bold underline underline-offset-4">Découvrir toute l’offre Nesel</a>
-            </div>
-        </div>
-    </section>
+    <x-contact-section
+        class="bg-nesel-ivory"
+        kicker="Demande de rappel"
+        title="Prêt à domicilier votre entreprise à Marrakech ?"
+        description="Laissez-nous vos coordonnées : un conseiller vous rappelle pour faire le point sur votre projet et vous adresser une proposition."
+        city="Marrakech"
+    />
 @endsection

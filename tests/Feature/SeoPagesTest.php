@@ -32,7 +32,7 @@ class SeoPagesTest extends TestCase
     public function test_public_page_renders_its_seo_metadata(string $path, string $title): void
     {
         $canonicalUrl = 'https://nesel.test'.$path;
-        $keywords = 'domiciliation entreprise, domiciliation entreprise Marrakech, domiciliation entreprise Casablanca, domiciliation société Maroc, adresse siège social, adresse de siège social entreprise, domiciliation siège social, adresse professionnelle entreprise, adresse professionnelle Marrakech, adresse professionnelle Casablanca, siège social Marrakech, siège social Casablanca, création entreprise Maroc, création entreprise Marrakech, création entreprise Casablanca, création société Maroc, création société Marrakech, création société Casablanca, accompagnement création entreprise, bureau professionnel Marrakech';
+        $keywords = 'domiciliation entreprise Marrakech, domiciliation société Marrakech, adresse professionnelle Marrakech, domiciliation entreprise, domiciliation entreprise Casablanca, domiciliation société Maroc, services de domiciliation, adresse siège social, domiciliation siège social, adresse professionnelle entreprise, adresse professionnelle Casablanca, siège social Marrakech, siège social Casablanca, accompagnement entrepreneurial, accompagnement entrepreneurial Marrakech, bureau professionnel Marrakech';
 
         $this->get($path)
             ->assertOk()
@@ -43,6 +43,8 @@ class SeoPagesTest extends TestCase
             ->assertSee('<meta name="twitter:card" content="summary_large_image">', false)
             ->assertSee('"@type":"Organization"', false)
             ->assertSee(config('business.private_company_disclaimer'))
+            ->assertSee('n’est pas un organisme gouvernemental')
+            ->assertSee('ne délivre aucun document administratif officiel')
             ->assertDontSee('"@type":"Government', false);
     }
 
@@ -72,16 +74,71 @@ class SeoPagesTest extends TestCase
             ->assertDontSee('content="index, follow"', false);
     }
 
-    public function test_homepage_h1_describes_the_service_above_the_marketing_tagline(): void
+    public function test_homepage_h1_targets_domiciliation_in_marrakech(): void
     {
         $this->get(route('home'))
             ->assertSeeInOrder([
+                'Domiciliation d’entreprise · Marrakech et Casablanca',
                 '<h1',
-                'Domiciliation d’entreprise à Marrakech et Casablanca',
+                'Domiciliez votre entreprise à',
+                'Marrakech',
                 '</h1>',
-                'Votre entreprise mérite une',
-                'adresse qui compte.',
             ], false);
+    }
+
+    /**
+     * Claims that would present Nesel as a public body or as the issuer of official
+     * documents. Factual terms (création de société, statuts, administration…) stay allowed.
+     *
+     * @return array<string, string>
+     */
+    public static function misleadingClaims(): array
+    {
+        return [
+            'government affiliation' => '/\b(site|organisme|service|portail|partenaire|prestataire)\s+(officiel|gouvernemental)/iu',
+            'state approval' => '/\b(agréée?|mandatée?|habilitée?|accréditée?)\s+par\s+(l[’\']État|l[’\']administration|le gouvernement)/iu',
+            'acting for the administration' => '/au\s+nom\s+de\s+(l[’\']État|l[’\']administration)/iu',
+            'issuing documents' => '/\b(nous\s+délivrons|Nesel\s+délivre|délivré(e)?s?\s+par\s+Nesel)\b/iu',
+            'direct-acquisition CTA' => '/\b(obten(ir|ez)|recev(oir|ez)|command(er|ez))\s+(votre|vos|un|une)\s+(RC|registre|ICE|IF\b|identifiant|immatriculation|numéro\s+d[’\']immatriculation|certificat\s+négatif|taxe\s+professionnelle|patente)/iu',
+        ];
+    }
+
+    #[DataProvider('publicPages')]
+    public function test_public_page_makes_no_misleading_government_or_official_document_claim(string $path, string $_title): void
+    {
+        // The disclaimer itself states what Nesel is not ("n’est pas un organisme gouvernemental").
+        $content = str_replace(config('business.private_company_disclaimer'), '', $this->get($path)->getContent());
+
+        foreach (self::misleadingClaims() as $claim => $pattern) {
+            $this->assertDoesNotMatchRegularExpression($pattern, $content, "{$path}: {$claim}");
+        }
+    }
+
+    public function test_misleading_claim_patterns_catch_the_claims_they_describe(): void
+    {
+        $examples = [
+            'government affiliation' => 'Nesel, partenaire officiel de l’administration',
+            'state approval' => 'Une société agréée par l’État',
+            'acting for the administration' => 'Nous agissons au nom de l’administration',
+            'issuing documents' => 'Nous délivrons vos documents en 48 h',
+            'direct-acquisition CTA' => 'Obtenez votre RC en ligne',
+        ];
+
+        foreach (self::misleadingClaims() as $claim => $pattern) {
+            $this->assertMatchesRegularExpression($pattern, $examples[$claim], $claim);
+        }
+
+        foreach (['Accompagnement à la constitution de votre société', 'création de société ou transfert de siège', 'vos échanges avec l’administration'] as $factualTerm) {
+            foreach (self::misleadingClaims() as $claim => $pattern) {
+                $this->assertDoesNotMatchRegularExpression($pattern, $factualTerm, "{$claim}: {$factualTerm}");
+            }
+        }
+    }
+
+    #[DataProvider('publicPages')]
+    public function test_public_page_has_no_unfinished_placeholder(string $path, string $_title): void
+    {
+        $this->get($path)->assertDontSee('À compléter');
     }
 
     public function test_canonical_url_ignores_request_host_and_query_string(): void

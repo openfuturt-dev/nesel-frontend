@@ -22,7 +22,7 @@ class Catalog
                 'id' => 'domiciliation',
                 'title' => 'Domiciliation du siège social au Maroc',
                 'summary' => 'Une adresse professionnelle pour le siège social de votre entreprise, à Marrakech ou à Casablanca.',
-                'intro' => 'Nesel met à votre disposition une adresse professionnelle à Marrakech ou à Casablanca, que vous pouvez utiliser comme siège social dans le cadre de la création ou du fonctionnement de votre entreprise.',
+                'intro' => 'Nesel met à votre disposition une adresse professionnelle à Marrakech ou à Casablanca, que vous pouvez utiliser comme siège social lors du lancement ou tout au long de la vie de votre entreprise.',
                 'items' => [
                     'Adresse professionnelle pour votre siège social',
                     'Contrat de domiciliation',
@@ -73,9 +73,9 @@ class Catalog
             ],
             [
                 'id' => 'creation',
-                'title' => 'Accompagnement à la création d’entreprise au Maroc',
-                'summary' => 'Un accompagnement pour organiser votre projet et suivre les différentes étapes de création.',
-                'intro' => 'Nesel accompagne les entrepreneurs dans l’organisation de leur projet de création d’entreprise, la préparation des éléments nécessaires et la coordination des différentes étapes.',
+                'title' => 'Accompagnement à la constitution de votre société',
+                'summary' => 'Un accompagnement pour organiser votre projet et suivre les différentes étapes du lancement de votre activité.',
+                'intro' => 'Nesel accompagne les entrepreneurs dans l’organisation de leur projet, la préparation des informations utiles à la constitution de leur société et la coordination des différentes étapes de démarrage.',
                 'items' => [
                     'Orientation sur la structure du projet',
                     'Préparation des informations et documents nécessaires',
@@ -83,7 +83,7 @@ class Catalog
                     'Suivi du dossier',
                     'Mise en relation avec des professionnels partenaires lorsque nécessaire',
                 ],
-                'note' => null,
+                'note' => 'Les immatriculations et identifiants officiels sont délivrés exclusivement par les administrations compétentes.',
             ],
             [
                 'id' => 'administratif',
@@ -133,7 +133,7 @@ class Catalog
                     'Réception du courrier',
                     'Notification par email',
                     'Mise à disposition du courrier en agence',
-                    'Accompagnement de base à la création et à l’organisation de l’entreprise',
+                    'Accompagnement de base au lancement et à l’organisation de l’entreprise',
                     'Accompagnement administratif standard',
                 ],
                 'optional' => [
@@ -182,7 +182,7 @@ class Catalog
                     'Numéro dédié exclusif',
                     'Accueil physique de vos partenaires et clients',
                     'Accès prioritaire étendu aux salles de réunion',
-                    'Suivi renforcé du projet de création d’entreprise',
+                    'Suivi renforcé de votre projet de lancement d’activité',
                     'Coordination des démarches liées à l’évolution de l’entreprise',
                     'Coordination avec un expert-comptable partenaire',
                     'Support documentaire et coordination avec les professionnels compétents',
@@ -230,7 +230,7 @@ class Catalog
             ['label' => 'Interlocuteur dédié', 'cells' => [$none, $optional, $included('Permanent')]],
             ['label' => 'Gestion administrative externalisée', 'cells' => [$none, $optional, $included()]],
             ['label' => 'Accueil des clients', 'cells' => [$none, $none, $included()]],
-            ['label' => 'Création d’entreprise', 'cells' => [$included('Accompagnement de base'), $included('Accompagnement de base'), $included('Suivi renforcé')]],
+            ['label' => 'Accompagnement au lancement', 'cells' => [$included('Accompagnement de base'), $included('Accompagnement de base'), $included('Suivi renforcé')]],
         ];
     }
 }

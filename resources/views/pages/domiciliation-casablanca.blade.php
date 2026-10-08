@@ -2,7 +2,7 @@
 @use('App\Support\StructuredData')
 @php
     $location = config('business.locations.casablanca');
-    $contactUrl = route('home', ['ville' => 'Casablanca']).'#contact';
+    $contactUrl = '#contact';
 
     $breadcrumbs = [
         ['name' => 'Accueil', 'url' => Seo::route('home')],
@@ -42,6 +42,7 @@
 @endphp
 
 @extends('layouts.app', [
+    'hasContactForm' => true,
     'title' => 'Domiciliation d’entreprise à Casablanca | Nesel',
     'description' => 'Nesel domicilie votre société à Casablanca : une adresse de siège social dans la capitale économique, la réception de votre courrier et un conseiller qui suit votre dossier.',
     'ogImage' => $location['image'],
@@ -126,7 +127,7 @@
             <dl class="divide-y divide-slate-200 border-y border-slate-200" data-reveal>
                 <div class="grid gap-2 py-7 sm:grid-cols-[0.9fr_1.1fr] sm:gap-8">
                     <dt class="text-lg font-extrabold tracking-tight">Lancer une nouvelle société</dt>
-                    <dd class="text-sm leading-6 text-slate-600">Vous avez besoin d’une adresse de siège pour constituer votre dossier de création, sans vous engager sur un bail dès le démarrage.</dd>
+                    <dd class="text-sm leading-6 text-slate-600">Vous avez besoin d’une adresse de siège pour la constitution de votre société, sans vous engager sur un bail dès le démarrage.</dd>
                 </div>
                 <div class="grid gap-2 py-7 sm:grid-cols-[0.9fr_1.1fr] sm:gap-8">
                     <dt class="text-lg font-extrabold tracking-tight">Travailler en indépendant ou en petite équipe</dt>
@@ -180,9 +181,11 @@
                     <p class="mt-4 text-base leading-7 text-slate-600">
                         Les justificatifs à fournir dépendent de votre projet et de la forme de votre société. Nous vous remettons la liste précise avec votre proposition.
                     </p>
-                    <p class="mt-4 rounded border border-dashed border-nesel-gold bg-nesel-gold/10 p-4 font-mono text-sm text-nesel-navy">
-                        [À compléter : liste des documents demandés par Nesel pour une domiciliation à Casablanca — à valider par l’équipe]
-                    </p>
+                        <div class="mt-8 border-l-4 border-nesel-red pl-5">
+                        <p class="font-bold text-nesel-navy">Vous souhaitez préparer votre dossier dès maintenant ?</p>
+                        <p class="mt-1 text-sm leading-6 text-slate-600">Un conseiller Nesel vous indique les pièces adaptées à votre situation.</p>
+                        <a href="#contact" class="mt-4 inline-flex items-center gap-2 border-b border-nesel-red pb-1 text-sm font-bold text-nesel-red hover:text-red-700">Demander la liste à un conseiller <span aria-hidden="true">→</span></a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -257,19 +260,11 @@
         </div>
     </section>
 
-    <section class="bg-nesel-navy py-20 text-white">
-        <div class="mx-auto flex max-w-7xl flex-col gap-8 px-5 sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:px-10">
-            <div>
-                <h2 class="text-3xl font-black tracking-[-0.04em] sm:text-4xl">Installez le siège de votre société à Casablanca</h2>
-                <p class="mt-3 max-w-xl text-white/75">Un conseiller vous rappelle pour étudier votre projet et vous adresser une proposition adaptée.</p>
-            </div>
-            <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
-                <a href="{{ $contactUrl }}" class="inline-flex min-h-13 items-center justify-center gap-2 rounded-md bg-nesel-red px-7 text-sm font-bold text-white transition hover:bg-red-700">
-                    Demander une proposition
-                    <span aria-hidden="true">→</span>
-                </a>
-                <a href="{{ route('home') }}" class="text-sm font-bold underline underline-offset-4">Retour à l’accueil</a>
-            </div>
-        </div>
-    </section>
+    <x-contact-section
+        class="bg-nesel-ivory"
+        kicker="Demande de rappel"
+        title="Installez le siège de votre société à Casablanca"
+        description="Un conseiller vous rappelle pour étudier votre projet et vous adresser une proposition adaptée."
+        city="Casablanca"
+    />
 @endsection

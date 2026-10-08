@@ -25,7 +25,7 @@
 
 @extends('layouts.app', [
     'title' => 'Services de domiciliation et accompagnement d’entreprise | Nesel',
-    'description' => 'Découvrez les services Nesel : domiciliation d’entreprise, gestion du courrier, bureaux, création d’entreprise et accompagnement administratif à Marrakech et Casablanca.',
+    'description' => 'Services de domiciliation Nesel à Marrakech et Casablanca : adresse professionnelle, gestion du courrier, bureaux et accompagnement au lancement de votre activité.',
 ])
 
 @push('structured-data')
@@ -48,7 +48,7 @@
                         Services de domiciliation et d’accompagnement pour votre entreprise
                     </h1>
                     <p class="mt-7 max-w-2xl text-lg leading-8 text-slate-300">
-                        Adresse de siège social, gestion du courrier, espaces de travail, création de société et suivi administratif : Nesel réunit les services dont votre entreprise a besoin à Marrakech et à Casablanca.
+                        Adresse de siège social, gestion du courrier, espaces de travail, accompagnement à la constitution de votre société et suivi de votre dossier : Nesel réunit les services dont votre entreprise a besoin à Marrakech et à Casablanca.
                     </p>
                     <div class="mt-9 flex flex-col gap-3 sm:flex-row">
                         <a href="#domiciliation" class="inline-flex min-h-13 items-center justify-center gap-2 rounded-md bg-nesel-red px-7 text-sm font-bold text-white transition hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-white">
@@ -88,7 +88,7 @@
                         <li>
                             <a href="#accompagnement" class="group flex items-center gap-5 py-5">
                                 <span class="flex size-10 shrink-0 items-center justify-center border border-white/15 text-xs font-black text-nesel-gold">03</span>
-                                <span><strong class="block text-sm text-white">Accompagnement business</strong><span class="mt-1 block text-xs leading-5 text-white/50">Création, administration et investisseurs</span></span>
+                                <span><strong class="block text-sm text-white">Accompagnement business</strong><span class="mt-1 block text-xs leading-5 text-white/50">Lancement, administration et investisseurs</span></span>
                                 <span class="ml-auto transition group-hover:translate-x-1" aria-hidden="true">→</span>
                             </a>
                         </li>
@@ -205,7 +205,7 @@
     <section id="accompagnement" class="scroll-mt-24 bg-white py-20 sm:py-28 lg:py-32">
         <div class="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
             <div class="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end lg:gap-20">
-                <x-section-heading eyebrow="Accompagnement business" title="Un appui structuré pour faire avancer l’entreprise." description="Création, gestion courante ou investissement au Maroc : vous gardez un interlocuteur identifiable pour les étapes qui comptent." />
+                <x-section-heading eyebrow="Accompagnement business" title="Un appui structuré pour faire avancer l’entreprise." description="Lancement de votre activité, gestion courante ou investissement au Maroc : vous gardez un interlocuteur identifiable pour les étapes qui comptent." />
                 <div class="hidden h-px bg-slate-200 lg:block" aria-hidden="true"></div>
             </div>
 
@@ -221,7 +221,7 @@
                             <span class="text-xs font-black tracking-[0.18em] text-slate-300">{{ sprintf('%02d', $loop->iteration + 4) }}</span>
                         </div>
                         <p class="mt-8 text-xs font-black uppercase tracking-[0.18em] text-nesel-red">
-                            {{ $service['id'] === 'creation' ? 'Création' : ($service['id'] === 'administratif' ? 'Administration' : 'Investisseurs') }}
+                            {{ $service['id'] === 'creation' ? 'Lancement' : ($service['id'] === 'administratif' ? 'Administration' : 'Investisseurs') }}
                         </p>
                         <h3 class="mt-3 text-2xl font-black tracking-[-0.035em] text-nesel-navy sm:text-3xl">{{ $service['title'] }}</h3>
                         <p class="mt-5 text-base leading-7 text-slate-600">{{ $service['intro'] }}</p>
@@ -236,6 +236,8 @@
                     </article>
                 @endforeach
             </div>
+
+            <p class="mt-10 max-w-3xl border-l-2 border-slate-300 pl-5 text-sm leading-6 text-slate-500">{{ config('business.private_company_disclaimer') }}</p>
         </div>
     </section>
 

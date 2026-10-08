@@ -11,11 +11,31 @@ class HomePageTest extends TestCase
         $response = $this->get('/');
 
         $response->assertOk()
-            ->assertSee('Votre entreprise mérite une')
-            ->assertSee('adresse qui compte.')
+            ->assertSee('Domiciliez votre entreprise à')
+            ->assertSee('Une adresse professionnelle et un accompagnement personnalisé pour lancer votre activité sereinement.')
             ->assertSee('Marrakech')
             ->assertSee('Casablanca')
             ->assertSee('Demander à être rappelé');
+    }
+
+    public function test_hero_ctas_lead_to_the_offers_and_to_an_advisor(): void
+    {
+        $this->get('/')->assertSeeInOrder([
+            'href="'.route('offers').'"',
+            'Découvrir nos offres de domiciliation',
+            'href="#contact"',
+            'Parler à un conseiller',
+        ], false);
+    }
+
+    public function test_home_page_presents_the_four_service_categories(): void
+    {
+        $this->get('/')->assertSeeInOrder([
+            'Domiciliation professionnelle',
+            'Accompagnement à la constitution',
+            'Suivi de votre dossier',
+            'Assistance aux formalités de démarrage',
+        ]);
     }
 
     public function test_submit_button_exposes_the_label_swapped_while_submitting(): void

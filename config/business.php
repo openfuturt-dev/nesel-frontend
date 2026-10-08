@@ -17,7 +17,7 @@ return [
 
     'name' => 'Nesel',
 
-    'private_company_disclaimer' => 'Nesel est une société privée de domiciliation et de services aux entreprises. Nesel n’est pas un organisme public et n’est affiliée à aucune administration publique.',
+    'private_company_disclaimer' => 'Nesel est une société privée spécialisée dans la domiciliation d’entreprises et l’accompagnement professionnel. Nesel n’est pas un organisme gouvernemental, n’est affiliée à aucune administration publique et ne délivre aucun document administratif officiel.',
 
     /** Paths relative to the public directory. */
     'logo' => 'nesel-logo.jpeg',
@@ -26,7 +26,8 @@ return [
 
     'telephone' => null,
 
-    'email' => null,
+    /** Public mailbox on the company domain, also the contact form's sender (CONTACT_FROM_EMAIL). */
+    'email' => 'contact@ne-sel.com',
 
     'locations' => [
 

@@ -2,6 +2,7 @@
     Page data passed through @extends('layouts.app', [...]):
     - title (required), description (required)
     - ogTitle, ogDescription, ogImage (optional, path relative to public/)
+    - hasContactForm (optional): the page renders <x-contact-section />, so contact links stay on the page
 --}}
 @use('App\Support\Seo')
 @use('App\Support\StructuredData')
@@ -13,6 +14,7 @@
 
     // On the homepage, keep section links as pure fragments for in-page scrolling.
     $homeUrl = request()->routeIs('home') ? '' : route('home');
+    $contactUrl = ($hasContactForm ?? false) ? '#contact' : route('home').'#contact';
 
     $navigationLinks = [
         'home' => 'Accueil',
@@ -85,14 +87,17 @@
                     @foreach ($navigationLinks as $routeName => $label)
                         <a href="{{ route($routeName) }}" @if (request()->routeIs($routeName)) aria-current="page" @endif @class(['transition hover:text-nesel-red', 'text-nesel-red' => request()->routeIs($routeName)])>{{ $label }}</a>
                     @endforeach
-                    <a href="{{ $homeUrl }}#contact" class="inline-flex min-h-11 items-center justify-center rounded-md bg-nesel-red px-5 text-white transition hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-nesel-red focus:ring-offset-2">Contact</a>
+                    <a href="{{ $contactUrl }}" class="inline-flex min-h-11 items-center justify-center rounded-md bg-nesel-red px-5 text-white transition hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-nesel-red focus:ring-offset-2">Contact</a>
                 </nav>
 
-                <button id="menu-toggle" type="button" class="flex size-11 items-center justify-center rounded-md border border-slate-200 text-nesel-navy lg:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label="Ouvrir le menu">
-                    <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round" />
-                    </svg>
-                </button>
+                <div class="flex items-center gap-2 lg:hidden">
+                    <a href="{{ $contactUrl }}" class="inline-flex min-h-11 items-center justify-center rounded-md bg-nesel-red px-4 text-sm font-semibold text-white">Contact</a>
+                    <button id="menu-toggle" type="button" class="flex size-11 items-center justify-center rounded-md border border-slate-200 text-nesel-navy" aria-expanded="false" aria-controls="mobile-menu" aria-label="Ouvrir le menu">
+                        <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round" />
+                        </svg>
+                    </button>
+                </div>
             </div>
 
             <nav id="mobile-menu" class="hidden border-t border-slate-200 bg-white px-5 py-5 lg:hidden" aria-label="Navigation mobile">
@@ -100,7 +105,7 @@
                     @foreach ($navigationLinks as $routeName => $label)
                         <a href="{{ route($routeName) }}" @if (request()->routeIs($routeName)) aria-current="page" @endif @class(['rounded-md px-3 py-3 hover:bg-slate-50', 'text-nesel-red' => request()->routeIs($routeName)])>{{ $label }}</a>
                     @endforeach
-                    <a href="{{ $homeUrl }}#contact" class="mt-2 rounded-md bg-nesel-red px-4 py-3 text-center text-white">Contact</a>
+                    <a href="{{ $contactUrl }}" class="mt-2 rounded-md bg-nesel-red px-4 py-3 text-center text-white">Contact</a>
                 </div>
             </nav>
         </header>
@@ -128,6 +133,16 @@
                     </nav>
                     <p>© {{ date('Y') }} Nesel. Marrakech · Casablanca</p>
                 </div>
+                @if (filled(config('business.telephone')) || filled(config('business.email')))
+                    <p class="mt-5 flex flex-wrap gap-x-6 gap-y-2 font-semibold">
+                        @if (filled(config('business.telephone')))
+                            <a href="tel:{{ preg_replace('/[^\d+]/', '', config('business.telephone')) }}" class="transition hover:text-nesel-red">{{ config('business.telephone') }}</a>
+                        @endif
+                        @if (filled(config('business.email')))
+                            <a href="mailto:{{ config('business.email') }}" class="transition hover:text-nesel-red">{{ config('business.email') }}</a>
+                        @endif
+                    </p>
+                @endif
                 <p class="mt-6 border-t border-slate-200 pt-5 leading-6 text-slate-600">{{ config('business.private_company_disclaimer') }}</p>
             </div>
         </footer>
